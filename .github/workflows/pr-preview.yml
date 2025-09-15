@@ -15,9 +15,7 @@ jobs:
 
       - name: Build site
         run: |
-          mkdir -p dist
-          cp -r * dist/
-          rm -rf dist/.git dist/.github
+          rsync -a --exclude '.git' --exclude '.github' --exclude 'dist' ./ dist
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
