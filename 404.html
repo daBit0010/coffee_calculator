@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Página no encontrada — Calculadora de Café</title>
+  <meta name="description" content="No encontramos la página solicitada. Usa los accesos directos a las vistas publicadas de la calculadora de café." />
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #f5f6fb;
+      --surface: #ffffff;
+      --border: rgba(148, 163, 184, 0.35);
+      --text-strong: #0f172a;
+      --text: #1e293b;
+      --text-muted: #64748b;
+      --accent: #2563eb;
+      --accent-soft: rgba(37, 99, 235, 0.18);
+      font-family: "Manrope", "Inter", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0f172a;
+        --surface: #111c32;
+        --border: rgba(148, 163, 184, 0.25);
+        --text-strong: #f8fafc;
+        --text: #e2e8f0;
+        --text-muted: #94a3b8;
+        --accent: #60a5fa;
+        --accent-soft: rgba(96, 165, 250, 0.24);
+      }
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: clamp(2.5rem, 6vw, 4rem) clamp(1.5rem, 5vw, 2.75rem);
+      background: radial-gradient(circle at top, rgba(37, 99, 235, 0.07), transparent 55%), var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    main {
+      width: min(620px, 100%);
+      background: var(--surface);
+      border-radius: 22px;
+      border: 1px solid var(--border);
+      box-shadow: 0 24px 60px rgba(15, 23, 42, 0.12);
+      padding: clamp(2rem, 4vw, 2.8rem);
+      display: grid;
+      gap: 1.2rem;
+    }
+
+    .eyebrow {
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--accent);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(1.8rem, 3.4vw, 2.35rem);
+      color: var(--text-strong);
+      letter-spacing: -0.02em;
+    }
+
+    p {
+      margin: 0;
+      font-size: 1rem;
+      color: var(--text);
+    }
+
+    code {
+      font-family: "JetBrains Mono", "Fira Code", "SFMono-Regular", Menlo, Consolas, monospace;
+      font-size: 0.94rem;
+      background: rgba(15, 23, 42, 0.08);
+      padding: 0.15rem 0.45rem;
+      border-radius: 6px;
+    }
+
+    .links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 0.5rem;
+    }
+
+    a.btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.7rem 1.25rem;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      font-weight: 600;
+      font-size: 0.97rem;
+      text-decoration: none;
+      color: #ffffff;
+      background: linear-gradient(135deg, var(--accent), #1d4ed8);
+      transition: transform 0.15s ease, box-shadow 0.2s ease, filter 0.2s ease;
+    }
+
+    a.btn.secondary {
+      color: var(--accent);
+      background: rgba(37, 99, 235, 0.08);
+      border-color: var(--accent-soft);
+    }
+
+    a.btn:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.05);
+      box-shadow: 0 12px 26px rgba(37, 99, 235, 0.22);
+    }
+
+    footer {
+      margin-top: 0.2rem;
+      font-size: 0.92rem;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+  <main id="fallback">
+    <span class="eyebrow">Error 404</span>
+    <h1>Página no encontrada</h1>
+    <p>No pudimos cargar la ruta <code id="current-path">/</code>. Verifica que la dirección esté bien escrita o usa alguno de estos accesos directos:</p>
+    <nav class="links">
+      <a class="btn" data-href="">Inicio</a>
+      <a class="btn secondary" data-href="pr-1/">Versión pr-1</a>
+      <a class="btn secondary" data-href="pr-2/">Versión pr-2</a>
+      <a class="btn secondary" data-href="pr-3/">Versión pr-3</a>
+    </nav>
+    <footer>Si llegaste aquí desde una previsualización de Pull Request, el contenido debería cargarse automáticamente.</footer>
+  </main>
+  <script>
+    (function configureLinks() {
+      const pathEl = document.getElementById('current-path');
+      if (pathEl) {
+        pathEl.textContent = window.location.pathname || '/';
+      }
+
+      const repoName = 'coffee_calculator';
+      const parts = window.location.pathname.split('/').filter(Boolean);
+      let base = '/';
+      const repoIndex = parts.indexOf(repoName);
+      if (repoIndex !== -1) {
+        base = '/' + parts.slice(0, repoIndex + 1).join('/') + '/';
+      }
+
+      document.querySelectorAll('[data-href]').forEach((link) => {
+        const dest = link.getAttribute('data-href');
+        link.href = dest ? base + dest : base;
+      });
+    })();
+
+    (async function hydratePreview() {
+      const { pathname } = window.location;
+      const prPattern = /\/pr-\d+(?:\/index\.html?)?\/?$/;
+      if (!prPattern.test(pathname)) return;
+
+      let normalized = pathname.replace(/\/?index\.html?$/, '/');
+      if (!normalized.endsWith('/')) {
+        normalized += '/';
+      }
+      const target = normalized + 'index.html';
+
+      try {
+        const response = await fetch(target, { cache: 'no-store' });
+        if (response.ok) {
+          const html = await response.text();
+          if (window.location.pathname !== normalized) {
+            history.replaceState(null, '', normalized);
+          }
+          document.open();
+          document.write(html);
+          document.close();
+        }
+      } catch (error) {
+        console.error('No se pudo cargar la vista desde 404.html:', error);
+      }
+    })();
+  </script>
+</body>
+</html>
