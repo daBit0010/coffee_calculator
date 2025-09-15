@@ -1,0 +1,627 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Calculadora de Café (1:16)</title>
+  <meta name="description" content="Calcula cuánta agua, café y cucharadas necesitas para preparar café filtrado a proporción 1:16." />
+  <meta property="og:title" content="Calculadora de Café (1:16)">
+  <meta property="og:description" content="Proyecta rápidamente agua, gramos de café y cucharadas para cada servicio.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="favicon.png">
+  <link rel="icon" href="favicon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f5f6fb;
+      --surface: #ffffff;
+      --surface-alt: #f8fafc;
+      --border: #e2e8f0;
+      --text-strong: #0f172a;
+      --text: #1e293b;
+      --text-muted: #64748b;
+      --accent: #2563eb;
+      --accent-soft: rgba(37, 99, 235, 0.12);
+      --radius-lg: 22px;
+      --radius-md: 14px;
+      --shadow-lg: 0 24px 60px rgba(15, 23, 42, 0.12);
+      font-family: "Manrope", "Inter", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        color-scheme: dark;
+        --bg: #0f172a;
+        --surface: #111c32;
+        --surface-alt: #132038;
+        --border: rgba(148, 163, 184, 0.18);
+        --text-strong: #f8fafc;
+        --text: #e2e8f0;
+        --text-muted: #94a3b8;
+        --accent: #60a5fa;
+        --accent-soft: rgba(96, 165, 250, 0.24);
+        --shadow-lg: 0 24px 60px rgba(2, 6, 23, 0.52);
+      }
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: radial-gradient(circle at top, rgba(37, 99, 235, 0.06), transparent 55%), var(--bg);
+      color: var(--text);
+      font-family: inherit;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; }
+
+    .page {
+      width: min(1060px, 100%);
+      margin: 0 auto;
+      padding: clamp(2.5rem, 6vw, 4.25rem) clamp(1.5rem, 6vw, 4rem) clamp(3rem, 8vw, 5rem);
+      display: flex;
+      flex-direction: column;
+      gap: clamp(2.5rem, 7vw, 3.75rem);
+    }
+
+    header.hero {
+      display: grid;
+      gap: 1.25rem;
+    }
+
+    .hero__eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .hero__eyebrow::before {
+      content: "";
+      width: 32px;
+      height: 1.5px;
+      background: currentColor;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(2.2rem, 4.4vw, 3rem);
+      letter-spacing: -0.03em;
+      color: var(--text-strong);
+    }
+
+    .hero p {
+      margin: 0;
+      max-width: 58ch;
+      font-size: clamp(1rem, 2.4vw, 1.14rem);
+      color: var(--text-muted);
+    }
+
+    .panel {
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      padding: clamp(2rem, 4vw, 2.75rem);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .layout {
+      display: grid;
+      gap: clamp(2.25rem, 4vw, 3.25rem);
+    }
+
+    @media (min-width: 960px) {
+      .layout {
+        grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+        align-items: start;
+      }
+    }
+
+    form {
+      display: grid;
+      gap: clamp(1.5rem, 3vw, 2rem);
+    }
+
+    .form-grid {
+      display: grid;
+      gap: 1.4rem;
+    }
+
+    @media (min-width: 720px) {
+      .form-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .field--full {
+        grid-column: 1 / -1;
+      }
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+    }
+
+    .label {
+      font-size: 0.94rem;
+      font-weight: 600;
+      color: var(--text-strong);
+    }
+
+    .hint {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    input[type="number"], select {
+      appearance: none;
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      background: var(--surface-alt);
+      color: var(--text-strong);
+      font-size: 1rem;
+      padding: 0.85rem 1rem;
+      transition: border-color 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+    }
+
+    input[type="number"]:focus, select:focus {
+      border-color: var(--accent);
+      background: #fff;
+      box-shadow: 0 0 0 4px var(--accent-soft);
+      outline: none;
+    }
+
+    select {
+      cursor: pointer;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.7rem;
+    }
+
+    .chip {
+      position: relative;
+    }
+
+    .chip input {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .chip span {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.6rem 1rem;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--surface-alt);
+      color: var(--text);
+      font-weight: 600;
+      font-size: 0.92rem;
+      transition: border-color 0.18s ease, color 0.18s ease, background-color 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .chip span::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: currentColor;
+      opacity: 0.6;
+    }
+
+    .chip input:checked + span {
+      color: #ffffff;
+      background: var(--accent);
+      border-color: var(--accent);
+      box-shadow: 0 12px 24px rgba(37, 99, 235, 0.22);
+    }
+
+    .chip input:checked + span::before {
+      opacity: 1;
+      background: #ffffff;
+    }
+
+    .chip input:focus-visible + span {
+      box-shadow: 0 0 0 4px var(--accent-soft), 0 12px 24px rgba(37, 99, 235, 0.12);
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.9rem;
+      padding-top: 0.4rem;
+    }
+
+    button {
+      border: none;
+      border-radius: 999px;
+      padding: 0.8rem 1.6rem;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      background: linear-gradient(135deg, var(--accent), #1d4ed8);
+      color: #ffffff;
+      transition: transform 0.15s ease, filter 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.05);
+      box-shadow: 0 12px 30px rgba(37, 99, 235, 0.24);
+    }
+
+    button:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 4px var(--accent-soft);
+    }
+
+    button.secondary {
+      background: var(--surface-alt);
+      color: var(--text-strong);
+      border: 1px solid var(--border);
+      box-shadow: none;
+    }
+
+    button.secondary:hover {
+      filter: none;
+      transform: translateY(-1px);
+      box-shadow: 0 12px 24px rgba(15, 23, 42, 0.08);
+    }
+
+    #alert {
+      display: none;
+      margin-top: -0.4rem;
+      padding: 0.75rem 1rem;
+      border-radius: var(--radius-md);
+      background: rgba(248, 113, 113, 0.16);
+      color: #b91c1c;
+      font-weight: 600;
+      border: 1px solid rgba(248, 113, 113, 0.4);
+    }
+
+    #salida {
+      display: none;
+      border-radius: var(--radius-lg);
+      background: var(--surface-alt);
+      border: 1px solid var(--border);
+      padding: clamp(1.8rem, 3vw, 2.4rem);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
+    }
+
+    .result-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .result-title h3 {
+      margin: 0;
+      font-size: 1rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .big {
+      margin: 0.6rem 0 0;
+      font-size: clamp(1.9rem, 4vw, 2.4rem);
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: var(--text-strong);
+    }
+
+    .metrics {
+      display: grid;
+      gap: 1rem;
+      margin-top: 1.6rem;
+    }
+
+    @media (min-width: 680px) {
+      .metrics {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    .metric {
+      border-radius: var(--radius-md);
+      background: rgba(255, 255, 255, 0.7);
+      border: 1px solid var(--border);
+      padding: 1rem 1.2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      color: var(--text);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .metric {
+        background: rgba(15, 23, 42, 0.38);
+        border-color: rgba(148, 163, 184, 0.24);
+      }
+      button.secondary {
+        background: rgba(15, 23, 42, 0.55);
+        color: var(--text);
+      }
+    }
+
+    .metric strong {
+      font-size: 0.88rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+    }
+
+    .metric span {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text-strong);
+    }
+
+    details {
+      margin-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      padding-top: 1.3rem;
+    }
+
+    summary {
+      cursor: pointer;
+      font-weight: 600;
+      color: var(--accent);
+      list-style: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    summary::after {
+      content: "";
+      width: 0.55rem;
+      height: 0.55rem;
+      border-right: 2px solid currentColor;
+      border-bottom: 2px solid currentColor;
+      transform: rotate(45deg);
+      transition: transform 0.2s ease;
+      margin-top: 0.08rem;
+    }
+
+    details[open] summary::after {
+      transform: rotate(-135deg);
+      margin-top: -0.08rem;
+    }
+
+    details ul {
+      margin: 1rem 0 0;
+      padding-left: 1.1rem;
+      color: var(--text);
+      font-size: 0.95rem;
+    }
+
+    details code {
+      background: rgba(15, 23, 42, 0.08);
+      border-radius: 6px;
+      padding: 0.1rem 0.4rem;
+      font-size: 0.9rem;
+    }
+
+    footer {
+      display: flex;
+      flex-direction: column;
+      gap: 0.9rem;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      background: rgba(255, 255, 255, 0.55);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      padding: clamp(1.6rem, 3vw, 2rem);
+    }
+
+    footer strong {
+      color: var(--text-strong);
+    }
+
+    footer em {
+      font-style: normal;
+      color: var(--text-strong);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      details code {
+        background: rgba(148, 163, 184, 0.16);
+      }
+      footer {
+        background: rgba(15, 23, 42, 0.46);
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="hero">
+      <span class="hero__eyebrow">Calculadora 1:16</span>
+      <h1>Una guía precisa y minimalista para preparar café filtrado</h1>
+      <p>Ingresa la cantidad de personas, volumen por taza y quién repetirá para conocer cuánta agua, gramos de café y cucharadas necesitas. También puedes ajustar la temperatura según el tueste.</p>
+    </header>
+
+    <section class="panel">
+      <div class="layout">
+        <form>
+          <div class="form-grid">
+            <div class="field">
+              <label for="personas" class="label">Cantidad de personas</label>
+              <input id="personas" type="number" min="1" step="1" value="4" inputmode="numeric" />
+              <span class="hint">Personas que tomarán café.</span>
+            </div>
+
+            <div class="field">
+              <label for="capacidad" class="label">Consumo por persona (capacidad del vaso, en mL)</label>
+              <input id="capacidad" type="number" min="60" step="10" value="200" inputmode="numeric" />
+              <span class="hint">Ejemplos: 150 mL (pequeño), 200 mL (estándar), 250–300 mL (grande).</span>
+            </div>
+
+            <div class="field">
+              <label for="repiten" class="label">¿Cuántas personas repiten?</label>
+              <input id="repiten" type="number" min="0" step="1" value="0" inputmode="numeric" />
+              <span class="hint">Número de personas que tomarán una taza adicional.</span>
+            </div>
+
+            <div class="field field--full">
+              <span class="label">Tueste (define la temperatura objetivo)</span>
+              <div class="chips" role="radiogroup" aria-label="Tueste">
+                <label class="chip">
+                  <input type="radio" name="tueste" value="claro" checked />
+                  <span>Claro — 100 °C</span>
+                </label>
+                <label class="chip">
+                  <input type="radio" name="tueste" value="medio" />
+                  <span>Medio — 95 °C</span>
+                </label>
+                <label class="chip">
+                  <input type="radio" name="tueste" value="oscuro" />
+                  <span>Oscuro — 90 °C</span>
+                </label>
+              </div>
+              <span class="hint">Selecciona el perfil que corresponda a tu café.</span>
+            </div>
+
+            <div class="field field--full">
+              <label for="gxtbsp" class="label">Asunción: gramos por cucharada</label>
+              <select id="gxtbsp">
+                <option value="5">5 g (cucharada rasa ligera)</option>
+                <option value="5.5">5.5 g</option>
+                <option value="6" selected>6 g (estándar doméstico)</option>
+                <option value="7">7 g (colmada/tueste muy denso)</option>
+              </select>
+              <span class="hint">Se usa para convertir gramos → cucharadas. Ajusta según tu cuchara medidora.</span>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button id="calc" type="button">Calcular</button>
+            <button id="reset" type="button" class="secondary">Limpiar</button>
+          </div>
+
+          <div id="alert"></div>
+        </form>
+
+        <aside id="salida">
+          <div class="result-title">
+            <h3>Resultado</h3>
+          </div>
+          <p class="big" id="cucharadas">— cucharadas</p>
+          <div class="metrics">
+            <div class="metric">
+              <strong>Gramos de café</strong>
+              <span id="gramos">— g</span>
+            </div>
+            <div class="metric">
+              <strong>Agua total</strong>
+              <span id="agua">— mL</span>
+            </div>
+            <div class="metric">
+              <strong>Temperatura objetivo</strong>
+              <span id="temp">— °C</span>
+            </div>
+          </div>
+
+          <details>
+            <summary>Ver fórmula y supuestos</summary>
+            <ul>
+              <li><strong>Proporción</strong> 1:16 (café : agua por masa).</li>
+              <li>Servidas totales = <code>personas + repiten</code>.</li>
+              <li>Agua total (mL) = <code>servidas × capacidad</code>.</li>
+              <li>Café (g) = <code>agua_total / 16</code>.</li>
+              <li>Cucharadas = <code>café(g) / gramos_por_cucharada</code>.</li>
+              <li>Conversión mL↔g del agua ≈ 1:1.</li>
+            </ul>
+          </details>
+        </aside>
+      </div>
+    </section>
+
+    <footer>
+      <p><strong>Instrucción general</strong> 📝<br>
+        1) Hervir el agua. &nbsp;2) Infusionar por <strong>4 minutos</strong>. &nbsp;3) Colar en <em>filtro grande de tela</em> o <em>filtro plástico del percolador</em>.
+      </p>
+      <p>La temperatura indicada corresponde al agua al verter. Si usas hervidor, deja reposar entre 15 y 45&nbsp;s según el objetivo (menos para 95&nbsp;°C, más para 90&nbsp;°C), o apóyate en un termómetro.</p>
+    </footer>
+  </main>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const tempMap = { claro: 100, medio: 95, oscuro: 90 };
+
+    function getSelectedRoast() {
+      const el = document.querySelector('input[name="tueste"]:checked');
+      return el ? el.value : 'claro';
+    }
+    function validate(p, c, r) {
+      const issues = [];
+      if (!Number.isFinite(p) || p < 1) issues.push("• 'Cantidad de personas' debe ser al menos 1.");
+      if (!Number.isFinite(c) || c < 60) issues.push("• 'Consumo por persona' debe ser ≥ 60 mL.");
+      if (!Number.isFinite(r) || r < 0) issues.push("• '¿Cuántas personas repiten?' no puede ser negativa.");
+      if (Number.isFinite(p) && Number.isFinite(r) && r > p) {
+        issues.push("• Por claridad, 'personas que repiten' no debería exceder la cantidad de personas (se asume una repetición por persona).");
+      }
+      return issues;
+    }
+    function format(n, decimals = 1) { return Number.isFinite(n) ? n.toFixed(decimals) : '—'; }
+    function calcular() {
+      const personas = parseFloat($("personas").value);
+      const capacidad = parseFloat($("capacidad").value);
+      const repiten   = parseFloat($("repiten").value);
+      const gxtbsp    = parseFloat($("gxtbsp").value);
+      const roast     = getSelectedRoast();
+      const temp      = tempMap[roast];
+
+      const issues = validate(personas, capacidad, repiten);
+      const alert = $("alert");
+      if (issues.length) {
+        alert.style.display = '';
+        alert.innerHTML = issues.join("<br>");
+        $("salida").style.display = 'none';
+        return;
+      } else {
+        alert.style.display = 'none';
+      }
+
+      const servidas = personas + repiten;
+      const aguaTotal = servidas * capacidad;    // mL ≈ g
+      const gramosCafe = aguaTotal / 16.0;       // 1:16
+      const cucharadas = gramosCafe / gxtbsp;
+
+      $("salida").style.display = '';
+      $("cucharadas").textContent = `${format(cucharadas, 1)} cucharadas`;
+      $("gramos").textContent = `${format(gramosCafe, 0)} g`;
+      $("agua").textContent = `${format(aguaTotal, 0)} mL`;
+      $("temp").textContent = `${temp} °C`;
+    }
+    $("calc").addEventListener("click", calcular);
+    $("reset").addEventListener("click", () => {
+      $("personas").value = 4;
+      $("capacidad").value = 200;
+      $("repiten").value = 0;
+      $("gxtbsp").value = 6;
+      document.querySelector('input[name="tueste"][value="claro"]').checked = true;
+      $("alert").style.display = 'none';
+      $("salida").style.display = 'none';
+    });
+    window.addEventListener('DOMContentLoaded', calcular);
+  </script>
+</body>
+</html>
