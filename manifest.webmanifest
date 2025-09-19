@@ -1,0 +1,16 @@
+{
+  "name": "Calculadora de Café",
+  "short_name": "Café 1:16",
+  "start_url": "./",
+  "display": "standalone",
+  "description": "Calcula cuántas cucharadas de café y agua necesitas para una proporción 1:16.",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "icons": [
+    {
+      "src": "favicon.png",
+      "sizes": "256x256",
+      "type": "image/png"
+    }
+  ]
+}
