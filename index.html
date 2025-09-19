@@ -5,11 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Calculadora de Café (1:16)</title>
   <meta name="description" content="Calcula cuántas cucharadas de café necesitas según personas, tamaño de vaso y repetidores. Incluye tueste→temperatura (claro 100°C, medio 95°C, oscuro 90°C).">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self'; manifest-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self';">
+  <meta name="application-name" content="Calculadora de Café" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="theme-color" content="#0f172a" />
+  <meta name="color-scheme" content="dark light" />
   <meta property="og:title" content="Calculadora de Café (1:16)">
   <meta property="og:description" content="Cálculo rápido en cucharadas según personas, vaso, repiten y tueste.">
   <meta property="og:type" content="website">
   <meta property="og:image" content="favicon.png">
   <link rel="icon" href="favicon.png" />
+  <link rel="apple-touch-icon" href="favicon.png" />
+  <link rel="manifest" href="manifest.webmanifest" />
   <style>
     :root {
       --bg: #0f172a;
@@ -179,66 +188,6 @@
     </footer>
   </div>
 
-  <script>
-    const $ = (id) => document.getElementById(id);
-    const tempMap = { claro: 100, medio: 95, oscuro: 90 };
-
-    function getSelectedRoast() {
-      const el = document.querySelector('input[name="tueste"]:checked');
-      return el ? el.value : 'claro';
-    }
-    function validate(p, c, r) {
-      const issues = [];
-      if (!Number.isFinite(p) || p < 1) issues.push("• 'Cantidad de personas' debe ser al menos 1.");
-      if (!Number.isFinite(c) || c < 60) issues.push("• 'Consumo por persona' debe ser ≥ 60 mL.");
-      if (!Number.isFinite(r) || r < 0) issues.push("• '¿Cuántas personas repiten?' no puede ser negativa.");
-      if (Number.isFinite(p) && Number.isFinite(r) && r > p) {
-        issues.push("• Por claridad, 'personas que repiten' no debería exceder la cantidad de personas (se asume una repetición por persona).");
-      }
-      return issues;
-    }
-    function format(n, decimals=1) { return Number.isFinite(n) ? n.toFixed(decimals) : '—'; }
-    function calcular() {
-      const personas = parseFloat($("personas").value);
-      const capacidad = parseFloat($("capacidad").value);
-      const repiten   = parseFloat($("repiten").value);
-      const gxtbsp    = parseFloat($("gxtbsp").value);
-      const roast     = getSelectedRoast();
-      const temp      = tempMap[roast];
-
-      const issues = validate(personas, capacidad, repiten);
-      const alert = $("alert");
-      if (issues.length) {
-        alert.style.display = '';
-        alert.innerHTML = issues.join("<br>");
-        $("salida").style.display = 'none';
-        return;
-      } else {
-        alert.style.display = 'none';
-      }
-
-      const servidas = personas + repiten;
-      const aguaTotal = servidas * capacidad;    // mL ≈ g
-      const gramosCafe = aguaTotal / 16.0;       // 1:16
-      const cucharadas = gramosCafe / gxtbsp;
-
-      $("salida").style.display = '';
-      $("cucharadas").textContent = `${format(cucharadas, 1)} cucharadas`;
-      $("gramos").textContent = `${format(gramosCafe, 0)} g`;
-      $("agua").textContent = `${format(aguaTotal, 0)} mL`;
-      $("temp").textContent = `${temp} °C`;
-    }
-    $("calc").addEventListener("click", calcular);
-    $("reset").addEventListener("click", () => {
-      $("personas").value = 4;
-      $("capacidad").value = 200;
-      $("repiten").value = 0;
-      $("gxtbsp").value = 6;
-      document.querySelector('input[name="tueste"][value="claro"]').checked = true;
-      $("alert").style.display = 'none';
-      $("salida").style.display = 'none';
-    });
-    window.addEventListener('DOMContentLoaded', calcular);
-  </script>
+  <script src="app.js" defer></script>
 </body>
 </html>
