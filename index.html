@@ -3,242 +3,179 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Calculadora de Café (1:16)</title>
-  <meta name="description" content="Calcula cuántas cucharadas de café necesitas según personas, tamaño de vaso y repetidores. Incluye tueste→temperatura (claro 100°C, medio 95°C, oscuro 90°C).">
-  <meta property="og:title" content="Calculadora de Café (1:16)">
-  <meta property="og:description" content="Cálculo rápido en cucharadas según personas, vaso, repiten y tueste.">
+  <title>Starter para GitHub Pages</title>
+  <meta name="description" content="Plantilla base para crear micrositios rápidos en GitHub Pages, con secciones editables y estilos modernos sin dependencias.">
+  <meta property="og:title" content="Starter para GitHub Pages">
+  <meta property="og:description" content="Clona, personaliza y publica tu micrositio estático en minutos.">
   <meta property="og:type" content="website">
   <meta property="og:image" content="favicon.png">
   <link rel="icon" href="favicon.png" />
   <style>
     :root {
       --bg: #0f172a;
-      --panel: #111827;
+      --panel: #0b1221;
       --muted: #94a3b8;
-      --text: #e5e7eb;
-      --accent: #22c55e;
-      --accent-2: #38bdf8;
-      --danger: #f87171;
-      --ring: #22c55e55;
-      --radius: 14px;
+      --text: #e2e8f0;
+      --accent: #38bdf8;
+      --accent-2: #22c55e;
+      --radius: 18px;
     }
+    *, *::before, *::after { box-sizing: border-box; }
     html, body {
-      margin:0; padding:0; background: linear-gradient(180deg, #0b1222, #0a0f1c);
-      color: var(--text); font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, "Helvetica Neue", Arial;
+      margin:0; padding:0;
+      font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: radial-gradient(circle at top, #1e293b 0%, #020617 55%);
+      color: var(--text);
+      line-height: 1.6;
     }
-    .wrap { max-width: 880px; margin: 40px auto; padding: 20px; }
-    header { display:flex; align-items:center; gap:12px; margin-bottom: 16px; }
-    header h1 { font-size: clamp(1.4rem, 3.5vw, 2rem); margin:0; }
-    header .tag { font-size: .85rem; color: var(--muted); }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .wrap { max-width: 960px; margin: 0 auto; padding: 48px 20px 60px; }
+    header { display:flex; flex-direction:column; gap:20px; text-align:left; }
+    header h1 { font-size: clamp(2.4rem, 6vw, 3.5rem); margin:0; }
+    header p { max-width: 640px; font-size: clamp(1.05rem, 2.8vw, 1.25rem); color: var(--muted); margin:0; }
+    .cta { display:flex; gap:12px; flex-wrap:wrap; }
+    .btn {
+      display:inline-flex; align-items:center; justify-content:center;
+      padding: 14px 22px; border-radius: 999px;
+      font-weight: 700; letter-spacing: .01em; font-size: 1rem;
+      cursor:pointer; border:none; transition: transform 120ms ease, filter 120ms ease;
+    }
+    .btn.primary { background: linear-gradient(90deg, var(--accent), #60a5fa); color:#041629; }
+    .btn.secondary { background: transparent; color: var(--text); border:1px solid rgba(148,163,184,.4); }
+    .btn:hover { transform: translateY(-1px); filter: brightness(1.05); }
+    section { margin-top: 64px; }
+    section h2 { font-size: clamp(1.6rem, 4vw, 2.3rem); margin-bottom: 18px; }
+    .card-grid { display:grid; gap:18px; grid-template-columns: 1fr; }
+    @media (min-width: 720px) { .card-grid { grid-template-columns: repeat(3, 1fr); } }
     .card {
-      background: rgba(17,24,39,.72);
-      border: 1px solid rgba(255,255,255,.06);
-      backdrop-filter: blur(8px);
+      background: rgba(15, 23, 42, .78);
+      border: 1px solid rgba(148, 163, 184, .12);
       border-radius: var(--radius);
-      padding: 18px;
-      box-shadow: 0 10px 40px rgba(0,0,0,.35);
+      padding: 22px;
+      box-shadow: 0 18px 50px rgba(2, 6, 23, .45);
+      display:flex; flex-direction:column; gap:12px;
     }
-    .grid { display:grid; gap:14px; grid-template-columns: 1fr; }
-    @media (min-width: 720px) { .grid { grid-template-columns: 1fr 1fr; } }
-    label { font-weight: 600; display:block; margin-bottom: 6px; }
-    .hint { color: var(--muted); font-size: .9rem; }
-    input[type="number"], select {
-      width:100%; padding: 12px 14px; font-size: 1rem; color: var(--text);
-      background: #0b1324; border: 1px solid rgba(255,255,255,.08); border-radius: 10px;
-      outline: none; transition: 150ms border, 150ms box-shadow;
+    .card h3 { margin:0; font-size: 1.1rem; }
+    .badge { display:inline-block; padding: 4px 10px; border-radius: 999px; font-size: .78rem; letter-spacing: .04em; background: rgba(56,189,248,.1); color: var(--accent); }
+    .steps { counter-reset: step; display:grid; gap:14px; }
+    .steps li {
+      list-style:none; background: rgba(15, 23, 42, .82);
+      border:1px solid rgba(56,189,248,.18);
+      border-radius: var(--radius);
+      padding: 18px 20px; position:relative; overflow:hidden;
     }
-    input[type="number"]:focus, select:focus {
-      border-color: var(--accent); box-shadow: 0 0 0 6px var(--ring);
+    .steps li::before {
+      counter-increment: step;
+      content: counter(step);
+      position:absolute; inset:16px auto auto 18px;
+      width: 34px; height:34px; border-radius: 50%;
+      display:grid; place-items:center;
+      font-weight:700; background: rgba(34,197,94,.18); color: var(--accent-2);
     }
-    .roast { display:flex; gap:10px; flex-wrap: wrap; }
-    .roast label {
-      border: 1px solid rgba(255,255,255,.08);
-      border-radius: 999px; padding: 10px 14px; cursor: pointer; font-weight:600;
-      display:flex; align-items:center; gap:8px; background:#0b1324;
+    .steps li strong { display:block; margin-left: 50px; font-size:1.02rem; }
+    .steps li span { display:block; margin-left: 50px; color: var(--muted); }
+    .note {
+      margin-top: 36px; padding: 18px 22px;
+      border-radius: var(--radius);
+      background: rgba(34,197,94,.08);
+      border:1px solid rgba(34,197,94,.3);
+      color: #bbf7d0;
     }
-    .roast input { display:none; }
-    .roast input:checked + span {
-      color: #04130a; background: var(--accent); border-radius: 999px; padding: 6px 10px;
-    }
-    .actions { display:flex; gap:10px; flex-wrap: wrap; margin-top: 16px; }
-    button {
-      cursor:pointer; border:none; border-radius: 10px; padding: 12px 16px; font-weight:700;
-      background: linear-gradient(90deg, var(--accent), var(--accent-2));
-      color:#04130a; transition: transform 120ms ease, filter 120ms ease;
-    }
-    button:hover { transform: translateY(-1px); filter: brightness(1.05); }
-    button.secondary { background: #0b1324; color: var(--text); border:1px solid rgba(255,255,255,.08); }
-    .out {
-      margin-top: 18px; padding: 16px; border-radius: 12px; background:#081024; border:1px solid rgba(56,189,248,.25);
-    }
-    .out h3 { margin:0 0 8px 0; }
-    .out .big { font-size: clamp(1.6rem, 4vw, 2.2rem); font-weight: 800; letter-spacing: .3px; }
-    .kpi { display:grid; grid-template-columns: 1fr; gap:8px; margin-top:10px; }
-    @media (min-width: 680px){ .kpi { grid-template-columns: repeat(3,1fr); } }
-    .kpi div { background: rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.06); border-radius: 10px; padding: 10px 12px; }
-    .warn { color: var(--danger); font-weight:600; }
-    details { margin-top: 14px; }
-    summary { cursor:pointer; color: var(--accent-2); font-weight:700; }
-    footer { margin-top: 24px; color: var(--muted); font-size: .92rem; line-height:1.5; }
-    .badge { font-size:.85rem; padding: 2px 8px; border-radius: 999px; background:#06210f; color:#47f38e; border:1px solid #1c5434; }
+    footer { margin-top: 64px; padding-top: 32px; border-top:1px solid rgba(148, 163, 184, .12); color: var(--muted); font-size: .9rem; }
+    footer .links { display:flex; flex-wrap:wrap; gap:18px; margin-top:12px; }
   </style>
 </head>
 <body>
   <div class="wrap">
     <header>
-      <h1>☕ Calculadora de Café (1:16)</h1>
-      <span class="tag">“Hervir el agua → infusionar 4&nbsp;min → colar en filtro grande de tela o filtro plástico del percolador.”</span>
+      <h1>Starter para GitHub Pages</h1>
+      <p>Un punto de partida moderno para publicar un micrositio estático sin pipelines ni build. Copia este HTML, personaliza textos, estilos y assets, y publícalo desde cualquier repositorio.</p>
+      <div class="cta">
+        <a class="btn primary" href="https://docs.github.com/es/pages/getting-started-with-github-pages/creating-a-github-pages-site">Crear sitio en GitHub Pages</a>
+        <a class="btn secondary" href="https://github.com/">Ver repositorio de ejemplo</a>
+      </div>
     </header>
 
-    <div class="card">
-      <div class="grid">
-        <div>
-          <label for="personas">Cantidad de personas</label>
-          <input id="personas" type="number" min="1" step="1" value="4" inputmode="numeric" />
-          <div class="hint">Personas que van a tomar café.</div>
+    <section>
+      <h2>Qué incluye</h2>
+      <div class="card-grid">
+        <div class="card">
+          <span class="badge">HTML</span>
+          <h3>Estructura accesible</h3>
+          <p>Secciones básicas (hero, beneficios, pasos y contacto) listas para editar. Agrega componentes propios sin romper el layout.</p>
         </div>
-
-        <div>
-          <label for="capacidad">Consumo por persona (capacidad del vaso, en mL)</label>
-          <input id="capacidad" type="number" min="60" step="10" value="200" inputmode="numeric" />
-          <div class="hint">Ejemplos: 150 mL (pequeño), 200 mL (estándar), 250–300 mL (grande).</div>
+        <div class="card">
+          <span class="badge">CSS</span>
+          <h3>Estilos sin dependencias</h3>
+          <p>Todo el estilo vive inline para evitar builds. Ajusta colores, tipografías y espaciados desde las variables CSS del inicio.</p>
         </div>
-
-        <div>
-          <label for="repiten">¿Cuántas personas repiten?</label>
-          <input id="repiten" type="number" min="0" step="1" value="0" inputmode="numeric" />
-          <div class="hint">Número de personas que tomarán una taza adicional.</div>
-        </div>
-
-        <div>
-          <label>Tueste (define la temperatura objetivo)</label>
-          <div class="roast" role="radiogroup" aria-label="Tueste">
-            <label>
-              <input type="radio" name="tueste" value="claro" checked />
-              <span>Claro — 100 °C</span>
-            </label>
-            <label>
-              <input type="radio" name="tueste" value="medio" />
-              <span>Medio — 95 °C</span>
-            </label>
-            <label>
-              <input type="radio" name="tueste" value="oscuro" />
-              <span>Oscuro — 90 °C</span>
-            </label>
-          </div>
-          <div class="hint">Marca el que corresponda a tu café.</div>
-        </div>
-
-        <div>
-          <label for="gxtbsp">Asunción: gramos por cucharada</label>
-          <select id="gxtbsp">
-            <option value="5">5 g (cucharada rasa ligera)</option>
-            <option value="5.5">5.5 g</option>
-            <option value="6" selected>6 g (estándar doméstico)</option>
-            <option value="7">7 g (colmada/tueste muy denso)</option>
-          </select>
-          <div class="hint">Se usa solo para convertir gramos → cucharadas. Puedes ajustarlo si conoces tu cuchara.</div>
+        <div class="card">
+          <span class="badge">DX</span>
+          <h3>Sin configuraciones complejas</h3>
+          <p>No requiere Node, bundlers ni frameworks. Abre el archivo en tu navegador y verás exactamente lo que se publica.</p>
         </div>
       </div>
+    </section>
 
-      <div class="actions">
-        <button id="calc">Calcular</button>
-        <button id="reset" class="secondary">Limpiar</button>
+    <section>
+      <h2>Cómo publicar en minutos</h2>
+      <ol class="steps">
+        <li>
+          <strong>Clona o copia el starter</strong>
+          <span>Usa la opción de plantilla, submódulo o un simple <code>sync-site.sh</code> para traer los archivos a tu proyecto.</span>
+        </li>
+        <li>
+          <strong>Personaliza contenido y estilos</strong>
+          <span>Edita títulos, textos, enlaces y agrega tus imágenes. Opcional: añade secciones nuevas o integra analytics.</span>
+        </li>
+        <li>
+          <strong>Activa GitHub Pages</strong>
+          <span>En <em>Settings → Pages</em> publica desde el branch principal y listo. Tu sitio quedará disponible en cuestión de segundos.</span>
+        </li>
+      </ol>
+      <div class="note">
+        ¿Necesitas contenido dinámico? Puedes enlazar APIs públicas con JavaScript o agregar un flujo de compilación más adelante.
       </div>
+    </section>
 
-      <div id="alert" class="hint warn" style="display:none; margin-top:10px;"></div>
-
-      <div class="out" id="salida" style="display:none;">
-        <h3>Resultado</h3>
-        <div class="big" id="cucharadas">— cucharadas</div>
-        <div class="kpi">
-          <div><strong>Gramos de café</strong><br><span id="gramos">— g</span></div>
-          <div><strong>Agua total</strong><br><span id="agua">— mL</span></div>
-          <div><strong>Temperatura objetivo</strong><br><span id="temp">— °C</span></div>
+    <section>
+      <h2>Checklist de personalización sugerida</h2>
+      <div class="card-grid">
+        <div class="card">
+          <h3>Branding</h3>
+          <p>Reemplaza colores en <code>:root</code>, usa tu tipografía y actualiza el favicon.</p>
         </div>
-
-        <details>
-          <summary>Ver fórmula y supuestos</summary>
-          <ul>
-            <li><span class="badge">Proporción</span> 1:16 (café : agua por masa).</li>
-            <li>Servidas totales = <code>personas + repiten</code>.</li>
-            <li>Agua total (mL) = <code>servidas × capacidad</code>.</li>
-            <li>Café (g) = <code>agua_total / 16</code>.</li>
-            <li>Cucharadas = <code>café(g) / gramos_por_cucharada</code>.</li>
-            <li>Conversión mL↔g del agua ≈ 1:1.</li>
-          </ul>
-        </details>
+        <div class="card">
+          <h3>Contenido</h3>
+          <p>Ajusta encabezados, copy y CTA. Incluye secciones de producto, métricas o testimonios según tu caso.</p>
+        </div>
+        <div class="card">
+          <h3>Integraciones</h3>
+          <p>Agrega scripts opcionales como analytics, formularios embebidos, chat o componentes web.</p>
+        </div>
       </div>
-    </div>
+    </section>
+
+    <section>
+      <h2>Contacto / CTA final</h2>
+      <div class="card">
+        <h3>¿Listo para lanzar?</h3>
+        <p>Actualiza este bloque con los canales de contacto, links a tu producto o el formulario que prefieras.</p>
+        <div class="cta">
+          <a class="btn primary" href="#">Agendar una demo</a>
+          <a class="btn secondary" href="mailto:hola@example.com">Escríbenos</a>
+        </div>
+      </div>
+    </section>
 
     <footer>
-      <p><strong>Instrucción general</strong> 📝<br>
-        1) Hervir el agua. &nbsp;2) Infusionar por <strong>4 minutos</strong>. &nbsp;3) Colar en <em>filtro grande de tela</em> o <em>filtro plástico del percolador</em>.
-      </p>
-      <p class="hint">Nota: la temperatura indicada corresponde al agua al verter. Si usas hervidor, deja reposar ~15–45&nbsp;s según el objetivo (menos para 95 °C, más para 90 °C), o usa un termómetro.</p>
+      <div>Starter MIT. Personalízalo, haz fork y compártelo.</div>
+      <div class="links">
+        <span>Documentación de GitHub Pages → <a href="https://docs.github.com/es/pages">docs.github.com/pages</a></span>
+        <span>Guía para dominios personalizados → <a href="https://docs.github.com/es/pages/configuring-a-custom-domain-for-your-github-pages-site">Configurar CNAME</a></span>
+      </div>
     </footer>
   </div>
-
-  <script>
-    const $ = (id) => document.getElementById(id);
-    const tempMap = { claro: 100, medio: 95, oscuro: 90 };
-
-    function getSelectedRoast() {
-      const el = document.querySelector('input[name="tueste"]:checked');
-      return el ? el.value : 'claro';
-    }
-    function validate(p, c, r) {
-      const issues = [];
-      if (!Number.isFinite(p) || p < 1) issues.push("• 'Cantidad de personas' debe ser al menos 1.");
-      if (!Number.isFinite(c) || c < 60) issues.push("• 'Consumo por persona' debe ser ≥ 60 mL.");
-      if (!Number.isFinite(r) || r < 0) issues.push("• '¿Cuántas personas repiten?' no puede ser negativa.");
-      if (Number.isFinite(p) && Number.isFinite(r) && r > p) {
-        issues.push("• Por claridad, 'personas que repiten' no debería exceder la cantidad de personas (se asume una repetición por persona).");
-      }
-      return issues;
-    }
-    function format(n, decimals=1) { return Number.isFinite(n) ? n.toFixed(decimals) : '—'; }
-    function calcular() {
-      const personas = parseFloat($("personas").value);
-      const capacidad = parseFloat($("capacidad").value);
-      const repiten   = parseFloat($("repiten").value);
-      const gxtbsp    = parseFloat($("gxtbsp").value);
-      const roast     = getSelectedRoast();
-      const temp      = tempMap[roast];
-
-      const issues = validate(personas, capacidad, repiten);
-      const alert = $("alert");
-      if (issues.length) {
-        alert.style.display = '';
-        alert.innerHTML = issues.join("<br>");
-        $("salida").style.display = 'none';
-        return;
-      } else {
-        alert.style.display = 'none';
-      }
-
-      const servidas = personas + repiten;
-      const aguaTotal = servidas * capacidad;    // mL ≈ g
-      const gramosCafe = aguaTotal / 16.0;       // 1:16
-      const cucharadas = gramosCafe / gxtbsp;
-
-      $("salida").style.display = '';
-      $("cucharadas").textContent = `${format(cucharadas, 1)} cucharadas`;
-      $("gramos").textContent = `${format(gramosCafe, 0)} g`;
-      $("agua").textContent = `${format(aguaTotal, 0)} mL`;
-      $("temp").textContent = `${temp} °C`;
-    }
-    $("calc").addEventListener("click", calcular);
-    $("reset").addEventListener("click", () => {
-      $("personas").value = 4;
-      $("capacidad").value = 200;
-      $("repiten").value = 0;
-      $("gxtbsp").value = 6;
-      document.querySelector('input[name="tueste"][value="claro"]').checked = true;
-      $("alert").style.display = 'none';
-      $("salida").style.display = 'none';
-    });
-    window.addEventListener('DOMContentLoaded', calcular);
-  </script>
 </body>
 </html>
