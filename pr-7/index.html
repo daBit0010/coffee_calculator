@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Starter para GitHub Pages</title>
+  <meta name="description" content="Plantilla base para crear micrositios rápidos en GitHub Pages, con secciones editables y estilos modernos sin dependencias.">
+  <meta property="og:title" content="Starter para GitHub Pages">
+  <meta property="og:description" content="Clona, personaliza y publica tu micrositio estático en minutos.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="favicon.png">
+  <link rel="icon" href="favicon.png" />
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #0b1221;
+      --muted: #94a3b8;
+      --text: #e2e8f0;
+      --accent: #38bdf8;
+      --accent-2: #22c55e;
+      --radius: 18px;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body {
+      margin:0; padding:0;
+      font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: radial-gradient(circle at top, #1e293b 0%, #020617 55%);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .wrap { max-width: 960px; margin: 0 auto; padding: 48px 20px 60px; }
+    header { display:flex; flex-direction:column; gap:20px; text-align:left; }
+    header h1 { font-size: clamp(2.4rem, 6vw, 3.5rem); margin:0; }
+    header p { max-width: 640px; font-size: clamp(1.05rem, 2.8vw, 1.25rem); color: var(--muted); margin:0; }
+    .cta { display:flex; gap:12px; flex-wrap:wrap; }
+    .btn {
+      display:inline-flex; align-items:center; justify-content:center;
+      padding: 14px 22px; border-radius: 999px;
+      font-weight: 700; letter-spacing: .01em; font-size: 1rem;
+      cursor:pointer; border:none; transition: transform 120ms ease, filter 120ms ease;
+    }
+    .btn.primary { background: linear-gradient(90deg, var(--accent), #60a5fa); color:#041629; }
+    .btn.secondary { background: transparent; color: var(--text); border:1px solid rgba(148,163,184,.4); }
+    .btn:hover { transform: translateY(-1px); filter: brightness(1.05); }
+    section { margin-top: 64px; }
+    section h2 { font-size: clamp(1.6rem, 4vw, 2.3rem); margin-bottom: 18px; }
+    .card-grid { display:grid; gap:18px; grid-template-columns: 1fr; }
+    @media (min-width: 720px) { .card-grid { grid-template-columns: repeat(3, 1fr); } }
+    .card {
+      background: rgba(15, 23, 42, .78);
+      border: 1px solid rgba(148, 163, 184, .12);
+      border-radius: var(--radius);
+      padding: 22px;
+      box-shadow: 0 18px 50px rgba(2, 6, 23, .45);
+      display:flex; flex-direction:column; gap:12px;
+    }
+    .card h3 { margin:0; font-size: 1.1rem; }
+    .badge { display:inline-block; padding: 4px 10px; border-radius: 999px; font-size: .78rem; letter-spacing: .04em; background: rgba(56,189,248,.1); color: var(--accent); }
+    .steps { counter-reset: step; display:grid; gap:14px; }
+    .steps li {
+      list-style:none; background: rgba(15, 23, 42, .82);
+      border:1px solid rgba(56,189,248,.18);
+      border-radius: var(--radius);
+      padding: 18px 20px; position:relative; overflow:hidden;
+    }
+    .steps li::before {
+      counter-increment: step;
+      content: counter(step);
+      position:absolute; inset:16px auto auto 18px;
+      width: 34px; height:34px; border-radius: 50%;
+      display:grid; place-items:center;
+      font-weight:700; background: rgba(34,197,94,.18); color: var(--accent-2);
+    }
+    .steps li strong { display:block; margin-left: 50px; font-size:1.02rem; }
+    .steps li span { display:block; margin-left: 50px; color: var(--muted); }
+    .note {
+      margin-top: 36px; padding: 18px 22px;
+      border-radius: var(--radius);
+      background: rgba(34,197,94,.08);
+      border:1px solid rgba(34,197,94,.3);
+      color: #bbf7d0;
+    }
+    footer { margin-top: 64px; padding-top: 32px; border-top:1px solid rgba(148, 163, 184, .12); color: var(--muted); font-size: .9rem; }
+    footer .links { display:flex; flex-wrap:wrap; gap:18px; margin-top:12px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>Starter para GitHub Pages</h1>
+      <p>Un punto de partida moderno para publicar un micrositio estático sin pipelines ni build. Copia este HTML, personaliza textos, estilos y assets, y publícalo desde cualquier repositorio.</p>
+      <div class="cta">
+        <a class="btn primary" href="https://docs.github.com/es/pages/getting-started-with-github-pages/creating-a-github-pages-site">Crear sitio en GitHub Pages</a>
+        <a class="btn secondary" href="https://github.com/">Ver repositorio de ejemplo</a>
+      </div>
+    </header>
+
+    <section>
+      <h2>Qué incluye</h2>
+      <div class="card-grid">
+        <div class="card">
+          <span class="badge">HTML</span>
+          <h3>Estructura accesible</h3>
+          <p>Secciones básicas (hero, beneficios, pasos y contacto) listas para editar. Agrega componentes propios sin romper el layout.</p>
+        </div>
+        <div class="card">
+          <span class="badge">CSS</span>
+          <h3>Estilos sin dependencias</h3>
+          <p>Todo el estilo vive inline para evitar builds. Ajusta colores, tipografías y espaciados desde las variables CSS del inicio.</p>
+        </div>
+        <div class="card">
+          <span class="badge">DX</span>
+          <h3>Sin configuraciones complejas</h3>
+          <p>No requiere Node, bundlers ni frameworks. Abre el archivo en tu navegador y verás exactamente lo que se publica.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Cómo publicar en minutos</h2>
+      <ol class="steps">
+        <li>
+          <strong>Clona o copia el starter</strong>
+          <span>Usa la opción de plantilla, submódulo o un simple <code>sync-site.sh</code> para traer los archivos a tu proyecto.</span>
+        </li>
+        <li>
+          <strong>Personaliza contenido y estilos</strong>
+          <span>Edita títulos, textos, enlaces y agrega tus imágenes. Opcional: añade secciones nuevas o integra analytics.</span>
+        </li>
+        <li>
+          <strong>Activa GitHub Pages</strong>
+          <span>En <em>Settings → Pages</em> publica desde el branch principal y listo. Tu sitio quedará disponible en cuestión de segundos.</span>
+        </li>
+      </ol>
+      <div class="note">
+        ¿Necesitas contenido dinámico? Puedes enlazar APIs públicas con JavaScript o agregar un flujo de compilación más adelante.
+      </div>
+    </section>
+
+    <section>
+      <h2>Checklist de personalización sugerida</h2>
+      <div class="card-grid">
+        <div class="card">
+          <h3>Branding</h3>
+          <p>Reemplaza colores en <code>:root</code>, usa tu tipografía y actualiza el favicon.</p>
+        </div>
+        <div class="card">
+          <h3>Contenido</h3>
+          <p>Ajusta encabezados, copy y CTA. Incluye secciones de producto, métricas o testimonios según tu caso.</p>
+        </div>
+        <div class="card">
+          <h3>Integraciones</h3>
+          <p>Agrega scripts opcionales como analytics, formularios embebidos, chat o componentes web.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Contacto / CTA final</h2>
+      <div class="card">
+        <h3>¿Listo para lanzar?</h3>
+        <p>Actualiza este bloque con los canales de contacto, links a tu producto o el formulario que prefieras.</p>
+        <div class="cta">
+          <a class="btn primary" href="#">Agendar una demo</a>
+          <a class="btn secondary" href="mailto:hola@example.com">Escríbenos</a>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div>Starter MIT. Personalízalo, haz fork y compártelo.</div>
+      <div class="links">
+        <span>Documentación de GitHub Pages → <a href="https://docs.github.com/es/pages">docs.github.com/pages</a></span>
+        <span>Guía para dominios personalizados → <a href="https://docs.github.com/es/pages/configuring-a-custom-domain-for-your-github-pages-site">Configurar CNAME</a></span>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>
